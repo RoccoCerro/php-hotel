@@ -40,7 +40,7 @@ $hotels = [
 
 ];
 
-var_dump($_GET)
+// var_dump($_GET)
 
 ?>
 
@@ -56,11 +56,13 @@ var_dump($_GET)
 
 <body>
   <main>
-    <div class="container">
+    <div class="container p-3">
       <form action="./index.php" method="GET">
-        <label for="parcheggio">Hotel con parcheggio</label>
-        <input type="checkbox" name="parcheggio">
-        <button>Filtra</button>
+        <div class="form-check form-switch d-inline-block me-3">
+          <input class="form-check-input custom-checkbox" type="checkbox" id="flexSwitchCheckChecked" name="parcheggio">
+          <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio</label>
+        </div>
+        <button class="btn btn-dark">Filtra</button>
       </form>
     </div>
     <div class="container">
@@ -86,8 +88,8 @@ var_dump($_GET)
             $index = $key + 1;
             $parking_filter = $_GET["parcheggio"] ?? "";
 
-            if($parking_filter === "on"){
-              if($parking === "Con parcheggio"){
+            if ($parking_filter === "on") {
+              if ($parking === "Con parcheggio") {
                 echo "
                   <tr>
                     <th scope='row'>$index</th>
@@ -99,7 +101,7 @@ var_dump($_GET)
                   </tr>
                 ";
               };
-            }else{
+            } else {
               echo "
                 <tr>
                   <th scope='row'>$index</th>
@@ -111,8 +113,6 @@ var_dump($_GET)
                 </tr>
               ";
             };
-
-            // echo $line;
           };
           ?>
         </tbody>
