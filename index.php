@@ -44,30 +44,57 @@ $hotels = [
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Hotel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+
 <body>
   <main>
-    <ul>
-      <?php
-      foreach($hotels as $hotel){
-        $parking = $hotel['parking'] ? 'Con parcheggio': 'Senza parcheggio';
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Parcheggio</th>
+            <th scope="col">Voto</th>
+            <th scope="col">Distanza dal centro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          foreach ($hotels as $key => $hotel) {
+            $name = $hotel['name'];
+            $description = $hotel['description'];
+            $parking = $hotel['parking'] ? 'Con parcheggio' : 'Senza parcheggio';
+            $vote = $hotel['vote'];
+            $distance_to_center = $hotel['distance_to_center'];
+            $index = $key + 1;
 
-        echo "
-        <ul>
-          <li>Nome: ".$hotel['name']."</li>
-          <li>Descrizione: ".$hotel['description']."</li>
-          <li>".$parking."</li>
-          <li>Voto: ".$hotel['vote']."</li>
-          <li>Distanza dal centro: ".$hotel['distance_to_center']."</li>
-        </ul>
-        ";
-      };
-      ?>
-    </ul>
+            $line = "
+              <tr>
+                <th scope='row'>$index</th>
+                <td>$name</td>
+                <td>$description</td>
+                <td>$parking</td>
+                <td>$vote</td>
+                <td>$distance_to_center</td>
+              </tr>
+            ";
+
+            echo $line;
+          };
+          ?>
+        </tbody>
+      </table>
+    </div>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
+
 </html>
