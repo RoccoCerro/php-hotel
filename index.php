@@ -40,6 +40,8 @@ $hotels = [
 
 ];
 
+var_dump($_GET)
+
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +56,13 @@ $hotels = [
 
 <body>
   <main>
+    <div class="container">
+      <form action="./index.php" method="GET">
+        <label for="parcheggio">Hotel con parcheggio</label>
+        <input type="checkbox" name="parcheggio">
+        <button>Filtra</button>
+      </form>
+    </div>
     <div class="container">
       <table class="table">
         <thead>
@@ -75,19 +84,35 @@ $hotels = [
             $vote = $hotel['vote'];
             $distance_to_center = $hotel['distance_to_center'];
             $index = $key + 1;
+            $parking_filter = $_GET["parcheggio"] ?? "";
 
-            $line = "
-              <tr>
-                <th scope='row'>$index</th>
-                <td>$name</td>
-                <td>$description</td>
-                <td>$parking</td>
-                <td>$vote</td>
-                <td>$distance_to_center</td>
-              </tr>
-            ";
+            if($parking_filter === "on"){
+              if($parking === "Con parcheggio"){
+                echo "
+                  <tr>
+                    <th scope='row'>$index</th>
+                    <td>$name</td>
+                    <td>$description</td>
+                    <td>$parking</td>
+                    <td>$vote</td>
+                    <td>$distance_to_center</td>
+                  </tr>
+                ";
+              };
+            }else{
+              echo "
+                <tr>
+                  <th scope='row'>$index</th>
+                  <td>$name</td>
+                  <td>$description</td>
+                  <td>$parking</td>
+                  <td>$vote</td>
+                  <td>$distance_to_center</td>
+                </tr>
+              ";
+            };
 
-            echo $line;
+            // echo $line;
           };
           ?>
         </tbody>
