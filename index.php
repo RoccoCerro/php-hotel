@@ -41,11 +41,11 @@ $hotels = [
 ];
 
 $get_parcking = $_GET["parcheggio"] ?? null;
-var_dump($get_parcking);
+// var_dump($get_parcking);
 $get_vote = $_GET["voto"] ?? "";
-var_dump($get_vote);
+// var_dump($get_vote);
 
-var_dump($_GET);
+// var_dump($_GET);
 
 // $filter = [$get_vote, $get_parcking];
 
@@ -54,7 +54,6 @@ $array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $g
   
   // Trasformo la stringa vote in number
   $vote_filter = (int)$get_vote; 
-  echo "Vote";
 
   $passed = false;
 
@@ -94,10 +93,10 @@ $array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $g
 <body>
   <main>
     <div class="container p-3">
-      <form action="./index.php" method="GET" class="row flex-nowrap align-content-center">
-        <div class="form-check form-switch d-inline-block me-3 col-sm-3">
-          <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio:</label>
-          <select class="form-select d-inline-block col-auto w-50" aria-label="Default select example"
+      <form action="./index.php" method="GET" class="row align-content-center">
+        <div class="form-check form-switch d-inline-block me-3 col-auto">
+          <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio?</label>
+          <select class="form-select d-inline-block w-25" aria-label="Default select example"
             name="parcheggio">
             <option>...</option>
             <option <?php echo $get_parcking === "si" ? "selected" : "" ?> value="si">SI</option>
