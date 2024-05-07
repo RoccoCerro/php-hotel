@@ -40,7 +40,49 @@ $hotels = [
 
 ];
 
-// var_dump($_GET)
+$get_parcking = $_GET["parcheggio"] ?? null;
+var_dump($get_parcking);
+$get_vote = $_GET["voto"] ?? "";
+var_dump($get_vote);
+
+var_dump($_GET);
+
+// $filter = [$get_vote, $get_parcking];
+
+$array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $get_vote) {
+  // list ($get_parcking, $get_vote) = $filter;
+  
+  // Trasformo la stringa vote in number
+  $vote_filter = (int)$get_vote; 
+  echo "Vote";
+  // var_dump($vote_filter);
+  // echo "Parking";
+  // var_dump($get_parcking);
+
+  $passed = false;
+
+  // Controllo del parking
+  if ($get_parcking !== 'no' && $get_parcking !== 'si' && $get_vote === 'Voto' || isset($get_vote) === false || $get_vote === '') {
+    $passed = true;
+  } else {
+    if ($get_parcking === 'si' && $hotel['parking'] === true && $get_vote === 'Voto' || isset($get_vote) === false || $get_vote === '') {
+      $passed = true;
+    } else if($get_parcking === "no" && $hotel['parking'] === false && $get_vote === 'Voto' || isset($get_vote) === false || $get_vote === ''){
+      $passed = true;
+    } else if($get_parcking === 'si' && $hotel['parking'] === true && $hotel["vote"] >= $vote_filter){
+      $passed = true;
+    } else if($get_parcking === "no" && $hotel['parking'] === false && $hotel["vote"] >= $vote_filter){
+      $passed = true;
+    } else if($get_parcking !== 'no' && $get_parcking !== 'si' && $hotel["vote"] >= $vote_filter){
+      $passed = true;
+    }
+  }
+
+  return $passed;
+});
+
+// echo "array filtered";
+// var_dump($array_filtered);
 
 ?>
 
@@ -51,18 +93,32 @@ $hotels = [
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hotel</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
   <main>
     <div class="container p-3">
-      <form action="./index.php" method="GET">
-        <div class="form-check form-switch d-inline-block me-3">
-          <input class="form-check-input custom-checkbox" type="checkbox" id="flexSwitchCheckChecked" name="parcheggio">
-          <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio</label>
+      <form action="./index.php" method="GET" class="row flex-nowrap align-content-center">
+        <div class="form-check form-switch d-inline-block me-3 col-sm-3">
+          <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio:</label>
+          <select class="form-select d-inline-block col-auto w-50" aria-label="Default select example"
+            name="parcheggio">
+            <option selected>...</option>
+            <option value="si">SI</option>
+            <option value="no">NO</option>
+          </select>
         </div>
-        <button class="btn btn-dark">Filtra</button>
+        <select class="form-select d-inline-block col-auto w-25" aria-label="Default select example" name="voto">
+          <option selected>Voto</option>
+          <option value="1">Uno</option>
+          <option value="2">Due</option>
+          <option value="3">Tre</option>
+          <option value="4">Quattro</option>
+          <option value="5">Cinque</option>
+        </select>
+        <button class="btn btn-dark col-2 ms-auto">Filtra</button>
       </form>
     </div>
     <div class="container">
@@ -79,47 +135,26 @@ $hotels = [
         </thead>
         <tbody>
           <?php
-          foreach ($hotels as $key => $hotel) {
-            $name = $hotel['name'];
-            $description = $hotel['description'];
-            $parking = $hotel['parking'] ? 'Con parcheggio' : 'Senza parcheggio';
-            $vote = $hotel['vote'];
-            $distance_to_center = $hotel['distance_to_center'];
-            $index = $key + 1;
-            $parking_filter = $_GET["parcheggio"] ?? "";
-
-            if ($parking_filter === "on") {
-              if ($parking === "Con parcheggio") {
-                echo "
-                  <tr>
-                    <th scope='row'>$index</th>
-                    <td>$name</td>
-                    <td>$description</td>
-                    <td>$parking</td>
-                    <td>$vote</td>
-                    <td>$distance_to_center</td>
-                  </tr>
-                ";
-              };
-            } else {
-              echo "
-                <tr>
-                  <th scope='row'>$index</th>
-                  <td>$name</td>
-                  <td>$description</td>
-                  <td>$parking</td>
-                  <td>$vote</td>
-                  <td>$distance_to_center</td>
-                </tr>
-              ";
-            };
-          };
+          foreach ($array_filtered as $index => $hotel) {
+            ?>
+            <tr>
+              <th scope='row'><?php echo $index + 1 ?></th>
+              <td><?= $hotel["name"] ?></td>
+              <td><?= $hotel["description"] ?></td>
+              <td><?= $hotel["parking"] === true ? "SI" : "NO" ?></td>
+              <td><?= $hotel["vote"] ?></td>
+              <td><?php echo $hotel["distance_to_center"] ?></td>
+            </tr>
+            <?php
+          }
           ?>
         </tbody>
       </table>
     </div>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
