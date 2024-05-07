@@ -55,9 +55,6 @@ $array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $g
   // Trasformo la stringa vote in number
   $vote_filter = (int)$get_vote; 
   echo "Vote";
-  // var_dump($vote_filter);
-  // echo "Parking";
-  // var_dump($get_parcking);
 
   $passed = false;
 
@@ -81,9 +78,6 @@ $array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $g
   return $passed;
 });
 
-// echo "array filtered";
-// var_dump($array_filtered);
-
 ?>
 
 <!DOCTYPE html>
@@ -105,18 +99,18 @@ $array_filtered = array_filter($hotels, function ($hotel) use ($get_parcking, $g
           <label class="form-check-label" for="flexSwitchCheckChecked">Hotel con parcheggio:</label>
           <select class="form-select d-inline-block col-auto w-50" aria-label="Default select example"
             name="parcheggio">
-            <option selected>...</option>
-            <option value="si">SI</option>
-            <option value="no">NO</option>
+            <option>...</option>
+            <option <?php echo $get_parcking === "si" ? "selected" : "" ?> value="si">SI</option>
+            <option <?php echo $get_parcking === "no" ? "selected" : "" ?> value="no">NO</option>
           </select>
         </div>
         <select class="form-select d-inline-block col-auto w-25" aria-label="Default select example" name="voto">
-          <option selected>Voto</option>
-          <option value="1">Uno</option>
-          <option value="2">Due</option>
-          <option value="3">Tre</option>
-          <option value="4">Quattro</option>
-          <option value="5">Cinque</option>
+          <option>Voto</option>
+          <option <?php echo $get_vote === "1" ? "selected" : "" ?> value="1">Uno</option>
+          <option <?php echo $get_vote === "2" ? "selected" : "" ?> value="2">Due</option>
+          <option <?php echo $get_vote === "3" ? "selected" : "" ?> value="3">Tre</option>
+          <option <?php echo $get_vote === "4" ? "selected" : "" ?> value="4">Quattro</option>
+          <option <?php echo $get_vote === "5" ? "selected" : "" ?> value="5">Cinque</option>
         </select>
         <button class="btn btn-dark col-2 ms-auto">Filtra</button>
       </form>
